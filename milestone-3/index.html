@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Resume Builder</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 20px;
+            padding: 0;
+            background-color: white;
+        }
+        form {
+            margin: auto;
+            background-color: rgb(228, 242, 255);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            max-width: 600px;
+        }
+        h1 {
+            text-align: center;
+            color: black;
+        }
+        fieldset {
+            border: 2px solid lightgrey;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: aliceblue;
+        }
+        legend {
+            font-weight: bold;
+            text-align: left;
+            color: rgb(34, 29, 29);
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            color: black;
+        }
+        input, textarea {
+            margin-top: 4px;
+            padding: 8px;
+            width: calc(100% - 1px);
+            border: 1px solid skyblue;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            display: block;
+            width: 100%;
+            background-color: skyblue;
+            color: black;
+            border: none;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            margin-top: 10px;
+            font-size: 18px;
+            font-family: 'Times New Roman', Times, serif;
+            padding: 10px;
+            cursor: pointer;
+        }
+        #resume-display {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 2px solid skyblue;
+            border-radius: 8px;
+            background-color: rgb(228, 242, 255);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        #resume-display h2 {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <h1>Resume Builder</h1>
+    <form id="resume-form">
+        <fieldset>
+            <legend>Personal Information</legend>
+            <label for="name">Name:</label>
+            <input type="text" id="name" placeholder="Enter your Name" required />
+            <label for="father-name">Father Name:</label>
+            <input type="text" id="father-name" placeholder="Enter your Father name" required />
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Enter your email" required />
+            <label for="contact">Contact Number:</label>
+            <input type="number" id="contact" placeholder="Enter your mobile number" />
+        </fieldset>
+        <fieldset>
+            <label for="education">Education</label>
+            <textarea id="education" placeholder="Enter Your Education" rows="3" required></textarea>
+        </fieldset>
+        <fieldset>
+            <label for="skills">Skills:</label>
+            <textarea id="skills" placeholder="Enter your skills" rows="4"></textarea>
+        </fieldset>
+        <fieldset>
+            <label for="experience">Experience:</label>
+            <textarea id="experience" placeholder="Enter your experience" rows="4"></textarea>
+        </fieldset>
+        <button type="submit">Generate Resume</button>
+    </form>
+    <br />
+    <div id="resume-display"></div>
+    <div style="text-align: center; margin-top: 20px;">
+        <button id="download-btn" style="display: none;">Download Resume</button>
+    </div>
+
+    <script>
+        const form = document.getElementById('resume-form');
+        const displayElement = document.getElementById('resume-display');
+        const downloadButton = document.getElementById('download-btn');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const fatherName = document.getElementById('father-name').value;
+            const email = document.getElementById('email').value;
+            const number = document.getElementById('contact').value;
+            const education = document.getElementById('education').value;
+            const skills = document.getElementById('skills').value;
+            const experience = document.getElementById('experience').value;
+
+            const resumeHTML = `
+                <h2>Resume</h2>
+                <h3>Personal Information</h3>
+                <p><b>Name:</b> ${name}</p>
+                <p><b>Father's Name:</b> ${fatherName}</p>
+                <p><b>Email:</b> ${email}</p>
+                <p><b>Contact Number:</b> ${number}</p>
+                <h3>Education</h3>
+                <p>${education}</p>
+                <h3>Skills</h3>
+                <p>${skills}</p>
+                <h3>Experience</h3>
+                <p>${experience}</p>
+            `;
+
+            displayElement.innerHTML = resumeHTML;
+            downloadButton.style.display = 'block';
+
+            downloadButton.onclick = function () {
+                const blob = new Blob([resumeHTML], { type: 'text/html' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'resume.html';
+                link.click();
+            };
+        });
+    </script>
+</body>
+</html>
